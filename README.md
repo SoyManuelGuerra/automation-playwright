@@ -126,11 +126,11 @@ src/
 │   ├── Table.ts
 │   └── Form.ts
 ├── utils/                     # Utilidades y helpers
-│   ├── TestDataGenerator.ts   # Generación de datos de prueba
-│   ├── DateUtils.ts          # Manipulación de fechas
-│   ├── StringUtils.ts        # Utilidades de strings
-│   ├── FileUtils.ts          # Manejo de archivos
-│   └── BrowserUtils.ts       # Utilidades del navegador
+│   ├── TestDataGenerator.ts
+│   ├── DateUtils.ts
+│   ├── StringUtils.ts
+│   ├── FileUtils.ts
+│   └── BrowserUtils.ts
 ├── api/                       # Clientes y modelos de API
 │   ├── clients/
 │   │   ├── UserApiClient.ts
@@ -434,147 +434,6 @@ export class Button extends BaseComponent {
         await this.button.hover();
     }
 }
-```
-
-### 🔧 **Utilidades del Framework**
-
-#### **TestDataGenerator - Generación de Datos**
-
-```typescript
-// src/utils/TestDataGenerator.ts
-import { TestDataGenerator } from '../utils/TestDataGenerator';
-
-// Generar datos de prueba dinámicos
-const testUser = TestDataGenerator.generateTestUser();
-const email = TestDataGenerator.generateEmail('example.com');
-const password = TestDataGenerator.generatePassword(16);
-const phone = TestDataGenerator.generatePhoneNumber();
-
-// Uso en pruebas
-test('user registration', async ({ page }) => {
-    const user = TestDataGenerator.generateTestUser();
-    
-    await page.fill('[data-testid="email"]', user.email);
-    await page.fill('[data-testid="password"]', user.password);
-    await page.fill('[data-testid="firstName"]', user.firstName);
-    await page.fill('[data-testid="lastName"]', user.lastName);
-});
-```
-
-#### **DateUtils - Manipulación de Fechas**
-
-```typescript
-// src/utils/DateUtils.ts
-import { DateUtils } from '../utils/DateUtils';
-
-// Trabajar con fechas en pruebas
-const currentDate = DateUtils.getCurrentDateFormatted(); // "2024-01-15"
-const futureDate = DateUtils.getFutureDate(30); // 30 días en el futuro
-const birthDate = DateUtils.getRandomBirthDate(); // Fecha de nacimiento aleatoria
-const age = DateUtils.getAge(birthDate); // Edad calculada
-
-// Uso en formularios
-test('date picker interaction', async ({ page }) => {
-    const targetDate = DateUtils.formatDate(DateUtils.getFutureDate(7));
-    
-    await page.fill('[data-testid="date-input"]', targetDate);
-    await page.click('[data-testid="submit-button"]');
-});
-```
-
-#### **StringUtils - Manipulación de Texto**
-
-```typescript
-// src/utils/StringUtils.ts
-import { StringUtils } from '../utils/StringUtils';
-
-// Transformar strings
-const camelCase = StringUtils.toCamelCase('user name'); // "userName"
-const kebabCase = StringUtils.toKebabCase('User Name'); // "user-name"
-const slug = StringUtils.generateSlug('My Test Title!'); // "my-test-title"
-const truncated = StringUtils.truncate('Very long text...', 10); // "Very lo..."
-
-// Validaciones
-const isValidEmail = StringUtils.isValidEmail('test@example.com'); // true
-const isValidUrl = StringUtils.isValidUrl('https://example.com'); // true
-const isNumeric = StringUtils.isNumeric('12345'); // true
-
-// Uso en pruebas
-test('form validation', async ({ page }) => {
-    const invalidEmail = 'invalid-email';
-    const validEmail = StringUtils.generateRandomString(8) + '@test.com';
-    
-    await page.fill('[data-testid="email"]', invalidEmail);
-    await expect(page.locator('[data-testid="error"]')).toBeVisible();
-    
-    await page.fill('[data-testid="email"]', validEmail);
-    await expect(page.locator('[data-testid="error"]')).toBeHidden();
-});
-```
-
-#### **FileUtils - Manejo de Archivos**
-
-```typescript
-// src/utils/FileUtils.ts
-import { FileUtils } from '../utils/FileUtils';
-
-// Leer y escribir archivos
-const testData = await FileUtils.readJsonFile('./data/test-data.json');
-const csvData = await FileUtils.readCsvFile('./data/users.csv');
-
-// Crear archivos temporales
-const tempFile = await FileUtils.createTempFile('Test content', '.txt');
-
-// Verificar archivos
-const fileExists = await FileUtils.fileExists('./screenshots/test.png');
-const fileSize = await FileUtils.getFileSize('./data/large-file.json');
-
-// Uso en pruebas
-test('file upload', async ({ page }) => {
-    const testFile = await FileUtils.createTempFile('Test file content');
-    
-    await page.setInputFiles('[data-testid="file-input"]', testFile);
-    await page.click('[data-testid="upload-button"]');
-    
-    await FileUtils.deleteFile(testFile); // Limpiar
-});
-```
-
-#### **BrowserUtils - Utilidades del Navegador**
-
-```typescript
-// src/utils/BrowserUtils.ts
-import { BrowserUtils } from '../utils/BrowserUtils';
-
-// Interacciones avanzadas con el navegador
-await BrowserUtils.waitForPageLoad(page);
-await BrowserUtils.scrollToElement(page, '[data-testid="footer"]');
-await BrowserUtils.takeScreenshot(page, 'test-screenshot');
-
-// Manejo de storage
-await BrowserUtils.setLocalStorageItem(page, 'user-token', 'abc123');
-const token = await BrowserUtils.getLocalStorageItem(page, 'user-token');
-await BrowserUtils.clearAllStorage(page);
-
-// Simulación de teclas
-await BrowserUtils.pressEnter(page, '[data-testid="search-input"]');
-await BrowserUtils.pressEscape(page);
-
-// Verificaciones de elementos
-const isVisible = await BrowserUtils.isElementVisible(page, '[data-testid="modal"]');
-const elementText = await BrowserUtils.getElementText(page, '[data-testid="title"]');
-const inputValue = await BrowserUtils.getInputValue(page, '[data-testid="email"]');
-
-// Uso en pruebas
-test('keyboard navigation', async ({ page }) => {
-    await page.goto('/search');
-    
-    await BrowserUtils.typeText(page, '[data-testid="search"]', 'test query');
-    await BrowserUtils.pressEnter(page, '[data-testid="search"]');
-    
-    await BrowserUtils.waitForElementVisible(page, '[data-testid="results"]');
-    await BrowserUtils.takeScreenshot(page, 'search-results');
-});
 ```
 
 ## 🚀 Ejecución de Pruebas
