@@ -348,3 +348,7 @@ export class BrowserUtils {
         });
     }
 }
+
+    /**
+     * Bloquea recursos específicos (imágenes, CSS, etc.)
+     */
